@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title id="companyTitle"></title>
+		<link
+			href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/company.css" />
+	</head>
+	<body>
+		<h1 id="mainHeading" class="main-heading hide">Compare Stocks:</h1>
+		<div class="flexible">
+			<div id="profilePage" class="hide company-container flexible col"></div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+		<script src="js/companyInfo.js"></script>
+		<script>
+			(async function() {
+				const urlParams = new URLSearchParams(window.location.search);
+				const symbol = urlParams.get("symbol");
+				if (symbol.toString().length > 5) {
+					compareSymbols = symbol.split(",");
+				} else {
+					compareSymbols = symbol;
+				}
+				const compInfo = new Profile(
+					document.getElementById("profilePage"),
+					compareSymbols
+				);
+				await compInfo.load();
+			})();
+		</script>
+	</body>
+</html>

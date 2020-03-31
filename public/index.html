@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Milestone 11</title>
+		<link
+			runat="server"
+			rel="shortcut icon"
+			href="media/favicon.png"
+			type="image/x-icon"
+		/>
+		<link runat="server" rel="icon" href="media/favicon.png" type="image/ico" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css?family=Lato&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="css/style(old).css" />
+	</head>
+	<body>
+		<div id="fullSite" class="site-container flexible col">
+			<h2 class="center main-title">Search Nasdaq Stocks</h2>
+				<div
+					id="searchContainer"
+					class="flexible col search-container"
+				>
+					<div id="compareBar" class="compare-bar flexible"></div>
+					<div id="matches" class="autocomplete-container"></div>
+					<div id="resultChart" class="result-chart flexible col"></div>
+				</div>
+			</div>
+		</div>
+		<script src="js/marquee.js"></script>
+		<script src="js/compare.js"></script> -
+		<script src="js/searchForm.js"></script>
+		<script src="js/searchResults.js"></script>
+		<script>
+			const parent = document.getElementById("fullSite");
+			const resultChart = document.getElementById("resultChart");
+			const topMarquee = new Marquee(parent, "marquee");
+			topMarquee.createMarquee();
+			const form = new Search(document.getElementById("searchContainer"));
+			const results = new ResultsList(document.getElementById("resultChart"));
+			const searchText = document.getElementById("searchText");
+			const compareBar = document.getElementById("compareBar");
+			let companyCompareBtn = new CompanyCompare("placing bar", compareBar);
+			let activeButton = companyCompareBtn.createCompareButton();
+			form.dataForResults(data => {
+				if (searchText.value === "") {
+					results.clearHistory();
+				} else if (data === undefined) {
+					results.noMatches();
+				} else {				
+					results.clearHistory();
+					results.createListItems(data);
+				}
+			});
+			activeButton.addEventListener("click", () => {
+				let searchString = "";
+					for (let i = 0; i < symbolArray.length; i++) {
+						if (i == symbolArray.length - 1) {
+							searchString += `${symbolArray[i].symbol}`;
+						} else {
+							searchString += `${symbolArray[i].symbol},`;
+						}
+					}
+				activeButton.href = `company.html?symbol=${searchString}`;
+			});
+		</script>
+	</body>
+</html>
