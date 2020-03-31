@@ -1,3 +1,3 @@
-\* Node JS Project
+**Node JS Project**
 
-\*\* Created server for my ITC Stock Exchange site
+***H2 Created server for my ITC Stock Exchange site***
