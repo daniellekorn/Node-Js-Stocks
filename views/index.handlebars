@@ -2,11 +2,13 @@
 <ul class="list-group">
     {{#each history}}
     <li class="list-group-item">
-        <strong><a href="http://localhost:3030/search/?query=${{this.query}}">{{this.date}}: {{this.query}}</a></strong>
-        <div class="ml-10">
+        <h5><strong><a href="http://localhost:3030/index.html?query=${{this.query}}">{{this.date}}</a></strong></h5>
+        <h5 class="text-success"><strong>Query: "{{this.query}}"</strong></h5>
+        <div class=" ml-10">
             {{#each this.companies}}
             <div class="mb-1">
-                <strong>{{this.symbol}} {{this.profile.companyName}}</strong> ${{this.profile.price}}
+                <strong>{{this.symbol}} {{this.profile.companyName}}</strong><span class="text-success">
+                    ${{this.profile.price}}</span>
                 <div>{{this.profile.description}}</div>
             </div>
             {{/each}}
