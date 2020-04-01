@@ -70,36 +70,32 @@ class Search {
 		element.insertAdjacentElement("afterbegin", searchBarContainer);
 		const searchLoader = document.getElementById("loader");
 
-		//Event listeners to run search
-		//something about this isn't working (search button functionality)?
-		// formElement.addEventListener("submit", event => {
-		// 	event.preventDefault();
-		// 	this.doSearch();
-		// });
-
-		let debounceTimeout;
-		inputBox.addEventListener("input", event => {
+		searchBtn.addEventListener("click", event => {
 			searchLoader.classList.remove("hide");
-			event.preventDefault();
-			if (debounceTimeout) {
-				clearTimeout(debounceTimeout);
-			}
-			debounceTimeout = setTimeout(() => {
-				callMyServer(this.inputBox.value).then(companies => {
-					this.callback(companies);
-					searchLoader.classList.add("hide");
-				});
-			}, 500);
-			if (history.pushState) {
-				let newurl =
-					window.location.protocol +
-					"//" +
-					window.location.host +
-					window.location.pathname +
-					`?query=${searchText.value}`;
-				window.history.pushState({ path: newurl }, "", newurl);
-			}
+			this.runSearch();
+			searchLoader.classList.add("hide");
 		});
+
+		// let debounceTimeout;
+		// inputBox.addEventListener("input", event => {
+		// 	event.preventDefault();
+		// 	if (debounceTimeout) {
+		// 		clearTimeout(debounceTimeout);
+		// 	}
+		// 	debounceTimeout = setTimeout(() => {
+		// 		this.runSearch();
+		// 		searchLoader.classList.add("hide");
+		// 	}, 500);
+		// 	if (history.pushState) {
+		// 		let newurl =
+		// 			window.location.protocol +
+		// 			"//" +
+		// 			window.location.host +
+		// 			window.location.pathname +
+		// 			`?query=${searchText.value}`;
+		// 		window.history.pushState({ path: newurl }, "", newurl);
+		// 	}
+		// });
 
 		formElement.addEventListener(
 			"submit",
@@ -108,6 +104,13 @@ class Search {
 			},
 			false
 		);
+	}
+
+	runSearch() {
+		callMyServer(this.inputBox.value).then(companies => {
+			// this.callback(companies);
+			window.location.href = `http://localhost:5000/search?query=${this.inputBox.value}`;
+		});
 	}
 
 	dataForResults(callback) {

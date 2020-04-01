@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const key = require("./routes/key");
 const exphbs = require("express-handlebars");
@@ -9,15 +8,14 @@ const path = require("path");
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 
+// Prevent prevention error from broswer
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 //Handlebars middleware
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-//Mongo DB code
+//Mongo DB
 const MongoClient = require("mongodb").MongoClient;
 const uri = `mongodb+srv://eliaye:${key}@cluster0-yoyrf.mongodb.net/test?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
@@ -44,6 +42,8 @@ app.get("/search", (req, res) => {
 				date: Date(),
 				companies: companyProfiles
 			});
+		} else {
+			res.status(400);
 		}
 		res.json(companyProfiles);
 	});
@@ -57,7 +57,6 @@ app.get("/search-history", (req, res) => {
 		.toArray()
 		.then(searches => {
 			res.render("search-history.handlebars", { history: searches });
-			// res.json({ history: searches });
 		});
 });
 

@@ -59,7 +59,7 @@ body {
 
 .search-container.flexible.col {
 	width: 60%;
-	height: 85%;
+	/* height: 85%; */
 	background-color: white;
 	align-items: stretch;
 	-moz-box-shadow: 0 0 10px #ccc;

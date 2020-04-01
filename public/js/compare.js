@@ -6,8 +6,9 @@ class CompanyCompare {
 
 	createCompareButton() {
 		const compBtn = document.createElement("a");
-		compBtn.textContent = "Compare companies";
+		compBtn.textContent = "Search History";
 		compBtn.classList.add("run-compare", "btn");
+		compBtn.href = "http://localhost:5000/search-history";
 		this.element.insertAdjacentElement("beforeend", compBtn);
 		this.compBtn = compBtn;
 		return compBtn;

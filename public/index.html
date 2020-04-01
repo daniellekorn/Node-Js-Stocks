@@ -19,7 +19,7 @@
 			href="https://fonts.googleapis.com/css?family=Lato&display=swap"
 			rel="stylesheet"
 		/>
-		<link rel="stylesheet" href="css/style(old).css" />
+		<link rel="stylesheet" href="css/style.css" />
 	</head>
 	<body>
 		<div id="fullSite" class="site-container flexible col">
@@ -59,17 +59,17 @@
 					results.createListItems(data);
 				}
 			});
-			activeButton.addEventListener("click", () => {
-				let searchString = "";
-					for (let i = 0; i < symbolArray.length; i++) {
-						if (i == symbolArray.length - 1) {
-							searchString += `${symbolArray[i].symbol}`;
-						} else {
-							searchString += `${symbolArray[i].symbol},`;
-						}
-					}
-				activeButton.href = `company.html?symbol=${searchString}`;
-			});
+			// activeButton.addEventListener("click", () => {
+			// 	let searchString = "";
+			// 		for (let i = 0; i < symbolArray.length; i++) {
+			// 			if (i == symbolArray.length - 1) {
+			// 				searchString += `${symbolArray[i].symbol}`;
+			// 			} else {
+			// 				searchString += `${symbolArray[i].symbol},`;
+			// 			}
+			// 		}
+			// 	activeButton.href = `company.html?symbol=${searchString}`;
+			// });
 		</script>
 	</body>
 </html>

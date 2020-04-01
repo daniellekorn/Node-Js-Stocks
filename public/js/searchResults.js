@@ -117,7 +117,7 @@ class ResultsList {
 			/*compare button functionality*/
 			accessCompare(company, compare);
 		});
-		const searchLoader = document.getElementById("loader");
-		searchLoader.classList.add("hide");
+		// const searchLoader = document.getElementById("loader");
+		// searchLoader.classList.add("hide");
 	}
 }
