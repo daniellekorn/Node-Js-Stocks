@@ -78,7 +78,7 @@ class Search {
 		// });
 
 		let debounceTimeout;
-		inputBox.addEventListener("keyup", event => {
+		inputBox.addEventListener("input", event => {
 			searchLoader.classList.remove("hide");
 			event.preventDefault();
 			if (debounceTimeout) {
@@ -87,6 +87,7 @@ class Search {
 			debounceTimeout = setTimeout(() => {
 				callMyServer(this.inputBox.value).then(companies => {
 					this.callback(companies);
+					searchLoader.classList.add("hide");
 				});
 			}, 500);
 			if (history.pushState) {

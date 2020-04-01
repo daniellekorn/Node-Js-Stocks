@@ -54,7 +54,7 @@ app.get("/search-history", (req, res) => {
 		.sort({ date: -1 })
 		.toArray()
 		.then(searches => {
-			res.render("index.handlebars", { history: searches });
+			res.render("search-history.handlebars", { history: searches });
 			// res.json({ history: searches });
 		});
 });
