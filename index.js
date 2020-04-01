@@ -44,7 +44,6 @@ app.get("/search", (req, res) => {
 				date: Date(),
 				companies: companyProfiles
 			});
-			console.log("saved");
 		}
 		res.json(companyProfiles);
 	});

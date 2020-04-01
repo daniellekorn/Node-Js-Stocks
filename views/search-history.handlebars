@@ -2,7 +2,7 @@
 <ul class="list-group">
     {{#each history}}
     <li class="list-group-item">
-        <h5><strong><a href="http://localhost:3030/index.html?query=${{this.query}}">{{this.date}}</a></strong></h5>
+        <h5><strong><a href="http://localhost:3030/search?query={{this.query}}">{{this.date}}</a></strong></h5>
         <h5 class="text-success"><strong>Query: "{{this.query}}"</strong></h5>
         <div class=" ml-10">
             {{#each this.companies}}
