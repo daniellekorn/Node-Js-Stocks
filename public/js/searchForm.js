@@ -1,5 +1,5 @@
 async function callMyServer(query) {
-	let response = await fetch(`http://localhost:3030/search/?query=${query}`);
+	let response = await fetch(`http://localhost:5000/search/?query=${query}`);
 	let data = await response.json();
 	return data;
 }

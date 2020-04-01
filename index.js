@@ -38,11 +38,14 @@ app.get("/search", (req, res) => {
 	const params = req.query.query;
 	const collection = client.db("itc-stocks").collection("searches");
 	apiSearch(params).then(companyProfiles => {
-		collection.insertOne({
-			query: params,
-			date: Date(),
-			companies: companyProfiles
-		});
+		if (!(params === null || params === "")) {
+			collection.insertOne({
+				query: params,
+				date: Date(),
+				companies: companyProfiles
+			});
+			console.log("saved");
+		}
 		res.json(companyProfiles);
 	});
 });
@@ -59,7 +62,7 @@ app.get("/search-history", (req, res) => {
 		});
 });
 
-PORT = 3030;
+PORT = 5000;
 app.listen(PORT, () => {
 	console.log(`App listening on port ${PORT}`);
 	console.log("Press Ctrl+C to quit.");
