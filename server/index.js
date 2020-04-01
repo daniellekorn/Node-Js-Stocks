@@ -1,4 +1,5 @@
 const express = require("express");
+const assert = require("assert");
 const fetch = require("isomorphic-fetch");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -7,6 +8,29 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//Mongo DB code
+const MongoClient = require("mongodb").MongoClient;
+const uri =
+	"mongodb+srv://eliaye:dust0216@cluster0-yoyrf.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+const dbName = "Search";
+
+const insertDocument = function(db, callback) {
+	const collection = db.collection("search-history");
+	collection.insert(
+		{
+			query: params,
+			results: [results],
+			date: Date()
+		},
+		(err, result) => {
+			assert.equal(err, null);
+			console.log("Inserted 1 document into the collection");
+			callback(result);
+		}
+	);
+};
 
 async function searchNasdaq(query) {
 	let response = await fetch(
@@ -64,6 +88,28 @@ app.get("/search", (req, res) => {
 	const params = req.query.query;
 	optimizedSearch(params).then(companyProfiles => {
 		res.json(companyProfiles);
+	});
+	console.log(params);
+	//Mongo DB
+	client.connect(err => {
+		assert.equal(null, err);
+		const collection = client.db("itc-stocks").collection("search-history");
+		let myObj = {
+			query: params,
+			results: [],
+			date: Date()
+		};
+		console.log(myObj);
+		collection.insertOne(myObj, (err, result) => {
+			assert.equal(err, null);
+		});
+		client.close();
+
+		// const db = client.db(dbName);
+
+		// insertDocument(db, () => {
+		// 	client.close();
+		// });
 	});
 });
 

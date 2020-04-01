@@ -4,22 +4,6 @@ async function callMyServer(query) {
 	return data;
 }
 
-function debounce(func, wait, immediate) {
-	let timeout;
-	return function() {
-		let context = this,
-			args = arguments;
-		let later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		let callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
-}
-
 function createLoader() {
 	const loader = document.createElement("div");
 	loader.setAttribute("id", "loader");
@@ -61,6 +45,7 @@ class Search {
 		inputBox.type = "text";
 		inputBox.classList.add("autocomplete", "search-text");
 		inputBox.placeholder = "Search...";
+		this.inputBox = inputBox;
 		autocompleteField.appendChild(inputBox);
 
 		/*form container*/
@@ -70,27 +55,38 @@ class Search {
 		/*loader*/
 		const loader = createLoader();
 
-		/*clear button*/
-		const clearBtn = document.createElement("input");
-		clearBtn.setAttribute("id", "clearButton");
-		clearBtn.type = "submit";
-		clearBtn.classList.add("search-button", "btn");
-		clearBtn.value = "Clear";
-		autocompleteField.appendChild(clearBtn);
+		/*search button*/
+		const searchBtn = document.createElement("button");
+		searchBtn.setAttribute("id", "searchButton");
+		searchBtn.type = "submit";
+		searchBtn.classList.add("search-button", "btn");
+		searchBtn.textContent = "Search";
+		autocompleteField.appendChild(searchBtn);
 
 		/*append to parent*/
 		searchBarContainer.appendChild(formElement);
 		searchBarContainer.appendChild(loader);
-		searchBarContainer.appendChild(clearBtn);
+		searchBarContainer.appendChild(searchBtn);
 		element.insertAdjacentElement("afterbegin", searchBarContainer);
-
 		const searchLoader = document.getElementById("loader");
-		inputBox.addEventListener("input", event => {
+
+		//Event listeners to run search
+		//something about this isn't working (search button functionality)?
+		formElement.addEventListener("submit", event => {
+			event.preventDefault();
+			this.doSearch();
+		});
+
+		let debounceTimeout;
+		inputBox.addEventListener("keyup", event => {
 			searchLoader.classList.remove("hide");
 			event.preventDefault();
-			callMyServer(inputBox.value).then(companies => {
-				debounce(this.callback(companies), 5000);
-			});
+			if (debounceTimeout) {
+				clearTimeout(debounceTimeout);
+			}
+			debounceTimeout = setTimeout(() => {
+				this.doSearch();
+			}, 500);
 			if (history.pushState) {
 				let newurl =
 					window.location.protocol +
@@ -109,6 +105,12 @@ class Search {
 			},
 			false
 		);
+	}
+
+	doSearch() {
+		callMyServer(this.inputBox.value).then(companies => {
+			this.callback(companies);
+		});
 	}
 
 	dataForResults(callback) {
