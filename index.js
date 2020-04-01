@@ -25,7 +25,6 @@ const client = new MongoClient(uri, {
 client.connect(err => {
 	if (!err) {
 		console.log("Mongodb connected successfully");
-		console.log(apiSearch);
 	} else {
 		console.log(err);
 		client.close();
@@ -52,8 +51,8 @@ app.get("/search-history", (req, res) => {
 		.sort({ date: -1 })
 		.toArray()
 		.then(searches => {
-			res.render("search-history.ejs", { history: searches });
-			res.json({ history: searches });
+			res.render("index.handlebars", { history: searches });
+			// res.json({ history: searches });
 		});
 });
 

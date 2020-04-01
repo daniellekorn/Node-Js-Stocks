@@ -1,0 +1,16 @@
+<h1 class="text-center mb-3">Search History</h1>
+<ul class="list-group">
+    {{#each history}}
+    <li class="list-group-item">
+        <strong><a href="http://localhost:3030/search/?query=${{this.query}}">{{this.date}}: {{this.query}}</a></strong>
+        <div class="ml-10">
+            {{#each this.companies}}
+            <div class="mb-1">
+                <strong>{{this.symbol}} {{this.profile.companyName}}</strong> ${{this.profile.price}}
+                <div>{{this.profile.description}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </li>
+    {{/each}}
+</ul>
