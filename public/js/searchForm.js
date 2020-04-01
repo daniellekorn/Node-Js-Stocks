@@ -1,5 +1,5 @@
 async function callMyServer(query) {
-	let response = await fetch(`http://localhost:3000/search/?query=${query}`);
+	let response = await fetch(`http://localhost:3030/search/?query=${query}`);
 	let data = await response.json();
 	return data;
 }
@@ -72,10 +72,10 @@ class Search {
 
 		//Event listeners to run search
 		//something about this isn't working (search button functionality)?
-		formElement.addEventListener("submit", event => {
-			event.preventDefault();
-			this.doSearch();
-		});
+		// formElement.addEventListener("submit", event => {
+		// 	event.preventDefault();
+		// 	this.doSearch();
+		// });
 
 		let debounceTimeout;
 		inputBox.addEventListener("keyup", event => {
@@ -85,7 +85,9 @@ class Search {
 				clearTimeout(debounceTimeout);
 			}
 			debounceTimeout = setTimeout(() => {
-				this.doSearch();
+				callMyServer(this.inputBox.value).then(companies => {
+					this.callback(companies);
+				});
 			}, 500);
 			if (history.pushState) {
 				let newurl =
@@ -105,12 +107,6 @@ class Search {
 			},
 			false
 		);
-	}
-
-	doSearch() {
-		callMyServer(this.inputBox.value).then(companies => {
-			this.callback(companies);
-		});
 	}
 
 	dataForResults(callback) {
