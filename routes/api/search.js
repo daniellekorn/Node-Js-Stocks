@@ -1,29 +1,4 @@
-const express = require("express");
 const fetch = require("isomorphic-fetch");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const key = require("./key");
-
-const app = express();
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-//Mongo DB code
-const MongoClient = require("mongodb").MongoClient;
-const uri = `mongodb+srv://eliaye:${key}@cluster0-yoyrf.mongodb.net/test?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true
-});
-
-client.connect(err => {
-	if (!err) {
-		console.log("Mongodb connected successfully");
-	} else {
-		console.log(err);
-		client.close();
-	}
-});
 
 async function searchNasdaq(query) {
 	let response = await fetch(
@@ -33,7 +8,7 @@ async function searchNasdaq(query) {
 	return data;
 }
 
-async function optimizedSearch(query) {
+const optimizedSearch = async query => {
 	const data = await searchNasdaq(query);
 	let j = 0;
 	let triplets = [];
@@ -75,23 +50,6 @@ async function optimizedSearch(query) {
 	} catch (err) {
 		console.log(err);
 	}
-}
+};
 
-app.get("/search", (req, res) => {
-	const params = req.query.query;
-	const collection = client.db("itc-stocks").collection("search-history");
-	optimizedSearch(params).then(companyProfiles => {
-		collection.insertOne({
-			query: params,
-			date: Date(),
-			companies: companyProfiles
-		});
-		res.json(companyProfiles);
-	});
-});
-
-PORT = 3030;
-app.listen(PORT, () => {
-	console.log(`App listening on port ${PORT}`);
-	console.log("Press Ctrl+C to quit.");
-});
+module.exports = optimizedSearch;
