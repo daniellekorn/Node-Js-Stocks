@@ -26,7 +26,6 @@ class SearchNasdaqAPI {
 		searchHistory.className = "btn btn-link";
 		searchHistory.innerHTML = "Search History";
 		inputGroupDiv.appendChild(button);
-		inputGroupDiv.appendChild(searchHistory);
 		inputDiv.appendChild(inputGroupDiv);
 		formElement.appendChild(inputDiv);
 
@@ -35,10 +34,11 @@ class SearchNasdaqAPI {
 			callMyServer(this.inputElement.value);
 		});
 
-		searchHistory.addEventListener("submit", event => {
+		searchHistory.addEventListener("click", event => {
 			window.location.href = "http://localhost:5000/search-history";
 		});
 
 		element.appendChild(formElement);
+		element.appendChild(searchHistory);
 	}
 }

@@ -17,6 +17,7 @@ app.set("view engine", "handlebars");
 
 //Mongo DB
 const MongoClient = require("mongodb").MongoClient;
+const ObjectId = require("mongodb").ObjectID;
 const uri = `mongodb+srv://eliaye:${key}@cluster0-yoyrf.mongodb.net/test?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
 	useNewUrlParser: true,
@@ -53,24 +54,25 @@ app.get("/search-history", (req, res) => {
 	const collection = client.db("itc-stocks").collection("searches");
 	collection
 		.find()
-		.sort({ date: -1 })
+		.sort({ date: 1 })
 		.toArray()
 		.then(searches => {
 			res.render("search-history.handlebars", { history: searches });
 		});
 });
 
+//need to make delete
 app.get("/search-history/:id", (req, res) => {
-	const ObjectId = require("mongodb").ObjectID;
 	const collection = client.db("itc-stocks").collection("searches");
 	const id = req.params.id;
 	collection.deleteOne({ _id: ObjectId(`${id}`) });
 	collection
 		.find()
-		.sort({ date: -1 })
+		.sort({ date: 1 })
 		.toArray()
 		.then(searches => {
 			res.render("search-history.handlebars", { history: searches });
+			// res.json(searches);
 		});
 });
 
