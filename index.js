@@ -11,11 +11,6 @@ app.use(express.static(path.join(__dirname, "public")));
 // Prevent prevention error from broswer
 app.use(cors());
 
-//Handlebars middleware
-//Removing this to render via reg JS client-side
-// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-// app.set("view engine", "handlebars");
-
 //Mongo DB
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
@@ -44,6 +39,7 @@ app.get("/search", (req, res) => {
 				date: Date(),
 				companies: companyProfiles
 			});
+			console.log("added");
 		} else {
 			res.status(400);
 		}
