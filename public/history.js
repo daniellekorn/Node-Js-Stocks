@@ -4,55 +4,76 @@ const getSearchHistory = async () => {
 	return data;
 };
 
-function resultList(element) {
-	this.element = element;
-	this.ul = document.createElement("ul");
-	this.ul.className = "list-group";
+const deleteItem = async id => {
+	let response = await fetch(`http://localhost:5000/search-history/${id}`, {
+		method: "DELETE"
+	});
+	let data = response.json();
+	return data;
+};
 
-	this.renderListItems = data => {
-		const list = document.createElement("li");
-		list.className = "list-group-item";
-		const title = document.createElement("h5");
-		title.classList.add("d-inline", "font-weight-bold");
-		const link = document.createElement("a");
-		link.href = `http://localhost:5000/search?query=${data.query}`;
-		title.appendChild(link);
-		const deleteBtn = document.createElement("a");
-		deleteBtn.classList.add("btn", "btn-danger", "d-inline", "float-right");
-		deleteBtn.href = `http://localhost:5000/search-history/${data._id}`;
-		deleteBtn.textContent = "Delete";
-		const queryValue = document.createElement("h5");
-		queryValue.classList.add("text-success", "font-weight-bold");
-		queryValue.textContent = `Query: ${data.query}`;
-		const companies = document.createElement("div");
-		companies.className = "ml-10";
+class ResultList {
+	constructor(element) {
+		this.element = element;
+		this.ul = document.createElement("ul");
+		this.ul.className = "list-group";
+	}
 
-		list.appendChild(title);
-		list.appendChild(deleteBtn);
-		list.appendChild(queryValue);
-		list.appendChild(companies);
+	renderListItems = data => {
+		data.map(entry => {
+			const list = document.createElement("li");
+			list.className = "list-group-item";
+			const title = document.createElement("h5");
+			title.classList.add("d-inline", "font-weight-bold");
+			const link = document.createElement("a");
+			link.textContent = entry.date;
+			link.href = `http://localhost:5000/search?query=${entry.query}`;
+			title.appendChild(link);
+			const deleteBtn = document.createElement("a");
+			deleteBtn.classList.add("btn", "btn-danger", "d-inline", "float-right");
+			deleteBtn.textContent = "Delete";
+			deleteBtn.href = `http://localhost:5000/search-history`;
+			deleteBtn.addEventListener("click", event => {
+				event.preventDefault();
+				deleteItem(entry._id);
+			});
 
-		console.log(data);
+			const queryValue = document.createElement("h5");
+			queryValue.classList.add("text-success", "font-weight-bold");
+			queryValue.textContent = `Query: ${entry.query}`;
+			const container = document.createElement("div");
+			container.className = "ml-10";
 
-		data.map(company => {
-			const oneCompany = document.createElement("div");
-			oneCompany.classList.add("mb-1");
-			const name = document.createElement("div");
-			name.textContent = `${company.symbol} ${company.profile.companyName}`;
-			name.className = "font-weight-bold";
-			const price = document.createElement("span");
-			price.className = "text-success";
-			price.textContent = `${company.profile.price}`;
-			name.appendChild(price);
-			const description = document.createElement("div");
-			description.textContent = `${company.profile.description}`;
+			list.appendChild(title);
+			list.appendChild(deleteBtn);
+			list.appendChild(queryValue);
 
-			oneCompany.appendChild(name);
-			oneCompany.appendChild(description);
+			console.log(entry);
 
-			this.companies.appendChild(oneCompany);
+			for (let i = 0; i < entry.companies.length; i++) {
+				const company = entry.companies[i];
+				if (!(company.status === 404)) {
+					const oneCompany = document.createElement("div");
+					oneCompany.classList.add("mb-1");
+					const name = document.createElement("div");
+					name.textContent = `${company.symbol} ${company.profile.companyName}`;
+					name.className = "font-weight-bold";
+					const price = document.createElement("span");
+					price.className = "text-success";
+					price.textContent = `${company.profile.price}`;
+					name.appendChild(price);
+					const description = document.createElement("div");
+					description.textContent = `${company.profile.description}`;
+
+					oneCompany.appendChild(name);
+					oneCompany.appendChild(description);
+
+					container.appendChild(oneCompany);
+				}
+			}
+			list.appendChild(container);
+			this.ul.appendChild(list);
+			this.element.appendChild(this.ul);
 		});
-
-		this.ul.appendChild(list);
 	};
 }

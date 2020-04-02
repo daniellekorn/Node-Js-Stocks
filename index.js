@@ -12,8 +12,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 //Handlebars middleware
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+//Removing this to render via reg JS client-side
+// app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// app.set("view engine", "handlebars");
 
 //Mongo DB
 const MongoClient = require("mongodb").MongoClient;
@@ -57,12 +58,11 @@ app.get("/search-history", (req, res) => {
 		.sort({ date: 1 })
 		.toArray()
 		.then(searches => {
-			res.render("search-history.handlebars", { history: searches });
+			res.send(searches);
 		});
 });
 
-//need to make delete
-app.get("/search-history/:id", (req, res) => {
+app.delete("/search-history/:id", (req, res) => {
 	const collection = client.db("itc-stocks").collection("searches");
 	const id = req.params.id;
 	collection.deleteOne({ _id: ObjectId(`${id}`) });
@@ -71,8 +71,7 @@ app.get("/search-history/:id", (req, res) => {
 		.sort({ date: 1 })
 		.toArray()
 		.then(searches => {
-			res.render("search-history.handlebars", { history: searches });
-			// res.json(searches);
+			res.send(searches);
 		});
 });
 

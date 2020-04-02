@@ -17,12 +17,11 @@
 		</div>
 		<script src="history.js"></script>
 		<script>
-			const results = new resultList(document.getElementById("fullPage"));
-			// window.onload = () => {
-			// 	const data = getSearchHistory();
-			// 	results.renderListItems(data);
-			// };
-			// results.renderListItems(data);
+			const results = new ResultList(document.getElementById("fullPage"));
+			const data = getSearchHistory();
+			data.then(res => {
+				results.renderListItems(res);
+			});
 		</script>
 	</body>
 </html>
