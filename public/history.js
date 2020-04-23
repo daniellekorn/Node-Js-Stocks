@@ -36,6 +36,7 @@ class ResultList {
 			deleteBtn.addEventListener("click", (event) => {
 				event.preventDefault();
 				deleteItem(entry._id);
+				location.reload();
 			});
 
 			const queryValue = document.createElement("h5");
