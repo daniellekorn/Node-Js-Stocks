@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const key = require("./routes/key");
-const exphbs = require("express-handlebars");
 const apiSearch = require("./routes/api/search");
 const path = require("path");
 
@@ -17,10 +16,10 @@ const ObjectId = require("mongodb").ObjectID;
 const uri = `mongodb+srv://eliaye:${key}@cluster0-yoyrf.mongodb.net/test?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
 	useNewUrlParser: true,
-	useUnifiedTopology: true
+	useUnifiedTopology: true,
 });
 
-client.connect(err => {
+client.connect((err) => {
 	if (!err) {
 		console.log("Mongodb connected successfully");
 	} else {
@@ -32,12 +31,12 @@ client.connect(err => {
 app.get("/search", (req, res) => {
 	const params = req.query.query;
 	const collection = client.db("itc-stocks").collection("searches");
-	apiSearch(params).then(companyProfiles => {
+	apiSearch(params).then((companyProfiles) => {
 		if (!(params === null || params === "")) {
 			collection.insertOne({
 				query: params,
 				date: Date(),
-				companies: companyProfiles
+				companies: companyProfiles,
 			});
 			console.log("added");
 		} else {
@@ -53,7 +52,7 @@ app.get("/search-history", (req, res) => {
 		.find()
 		.sort({ date: 1 })
 		.toArray()
-		.then(searches => {
+		.then((searches) => {
 			res.send(searches);
 		});
 });
@@ -66,7 +65,7 @@ app.delete("/search-history/:id", (req, res) => {
 		.find()
 		.sort({ date: 1 })
 		.toArray()
-		.then(searches => {
+		.then((searches) => {
 			res.send(searches);
 		});
 });

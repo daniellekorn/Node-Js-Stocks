@@ -4,9 +4,9 @@ const getSearchHistory = async () => {
 	return data;
 };
 
-const deleteItem = async id => {
+const deleteItem = async (id) => {
 	let response = await fetch(`http://localhost:5000/search-history/${id}`, {
-		method: "DELETE"
+		method: "DELETE",
 	});
 	let data = response.json();
 	return data;
@@ -19,8 +19,8 @@ class ResultList {
 		this.ul.className = "list-group";
 	}
 
-	renderListItems = data => {
-		data.map(entry => {
+	renderListItems = (data) => {
+		data.map((entry) => {
 			const list = document.createElement("li");
 			list.className = "list-group-item";
 			const title = document.createElement("h5");
@@ -33,7 +33,7 @@ class ResultList {
 			deleteBtn.classList.add("btn", "btn-danger", "d-inline", "float-right");
 			deleteBtn.textContent = "Delete";
 			deleteBtn.href = `http://localhost:5000/search-history`;
-			deleteBtn.addEventListener("click", event => {
+			deleteBtn.addEventListener("click", (event) => {
 				event.preventDefault();
 				deleteItem(entry._id);
 			});
@@ -60,7 +60,7 @@ class ResultList {
 					name.className = "font-weight-bold";
 					const price = document.createElement("span");
 					price.className = "text-success";
-					price.textContent = `${company.profile.price}`;
+					price.textContent = ` ${company.profile.price}`;
 					name.appendChild(price);
 					const description = document.createElement("div");
 					description.textContent = `${company.profile.description}`;
