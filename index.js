@@ -30,7 +30,7 @@ client.connect((err) => {
 });
 
 app.get("/search", (req, res) => {
-  const params = req.query.query;
+  const params = req.query.query
   const collection = client.db("itc-stocks").collection("searches");
   apiSearch(params).then((companyProfiles) => {
     if (!(params === null || params === "")) {

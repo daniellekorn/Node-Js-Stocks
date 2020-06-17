@@ -49,30 +49,32 @@ class ResultList {
       list.appendChild(deleteBtn);
       list.appendChild(queryValue);
 
-      console.log(entry);
-
       //   #MIGHT NEED TO MAKE EDITS HERE FOR NEW KEYS IN API
-      for (let i = 0; i < entry.companies.length; i++) {
-        const company = entry.companies[i];
-        if (!(company.status === 404)) {
-          const oneCompany = document.createElement("div");
-          oneCompany.classList.add("mb-1");
-          const name = document.createElement("div");
-          name.textContent = `${company.symbol} ${company.profile.companyName}`;
-          name.className = "font-weight-bold";
-          const price = document.createElement("span");
-          price.className = "text-success";
-          price.textContent = ` ${company.profile.price}`;
-          name.appendChild(price);
-          const description = document.createElement("div");
-          description.textContent = `${company.profile.description}`;
+      if (entry.companies != null) {
+            for (let i = 0; i < entry.companies.length; i++) {
+                const company = entry.companies[i];
+                if (company != null) {
+                  if (!(company.status === 404)) {
+                    const oneCompany = document.createElement("div");
+                    oneCompany.classList.add("mb-1");
+                    const name = document.createElement("div");
+                    name.textContent = `${company.symbol} ${company.companyName}`;
+                    name.className = "font-weight-bold";
+                    const price = document.createElement("span");
+                    price.className = "text-success";
+                    price.textContent = ` ${company.price}`;
+                    name.appendChild(price);
+                    const description = document.createElement("div");
+                    description.textContent = `${company.description}`;
 
-          oneCompany.appendChild(name);
-          oneCompany.appendChild(description);
+                    oneCompany.appendChild(name);
+                    oneCompany.appendChild(description);
 
-          container.appendChild(oneCompany);
+                    container.appendChild(oneCompany);
+                  }
+                }
+              }
         }
-      }
       list.appendChild(container);
       this.ul.appendChild(list);
       this.element.appendChild(this.ul);

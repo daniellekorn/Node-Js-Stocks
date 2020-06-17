@@ -1,5 +1,5 @@
 async function callMyServer(query) {
-  const myAPI = `http://localhost:5000/search/?query=${query}?`;
+  const myAPI = `http://localhost:5000/search/?query=${query}`;
   let response = await fetch(myAPI);
   let data = await response.json();
   window.location.href = myAPI;
